@@ -14,16 +14,18 @@ import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar"
 import { Input } from "~/components/ui/input"
 import type { files_table, folder_table } from "~/server/db/schema"
 import Link from "next/link"
+import { SignedIn, SignInButton, SignedOut, SignUpButton, UserButton } from "@clerk/nextjs"
+import SideBarNav from "./sidebar-nav"
 
 
 export default function DriveContents(props: {
+    selectedFolder : number;
     files : (typeof files_table.$inferSelect)[];
     folders : (typeof folder_table.$inferSelect)[];
     parents : (typeof folder_table.$inferSelect)[];
+    allFolders : (typeof folder_table.$inferSelect)[];
 
 }) {
-
-  const breadcrumbs : unknown[] = []
 
   const handleUpload = () => {
     alert("Going to implement file uploads")
@@ -44,10 +46,18 @@ export default function DriveContents(props: {
           <button>
             <Settings />
           </button>
-          <Avatar className="ml-auto">
-            <AvatarImage src="https://avatars.githubusercontent.com/u/124599?v=4" alt="James"/>
-            <AvatarFallback>JM</AvatarFallback>
-          </Avatar>
+        <div>
+
+          <SignedOut>
+              <SignInButton />
+              <SignUpButton />
+          </SignedOut>
+          <SignedIn>
+              <UserButton />
+          </SignedIn>
+
+
+        </div> 
         </div>
       </header>
 
@@ -56,31 +66,7 @@ export default function DriveContents(props: {
         {/* Sidebar */}
 
         <div className="w-64 border-r border-border border-neutral-500 bg-neutral-900 h-full flex flex-col">
-          <div className="p-4">
-            <Button variant= "outline" className="w-full bg-neutral-800 justify-start">
-              <Plus size={16} />
-              New
-            </Button>
-
-            <nav className="space-y-1 mt-5">
-              <Link
-                  className="w-full justify-start gap-2 hover:bg-neutral-100"
-                  href={'/f/1'}
-              >
-                <FolderIcon className="h-5 w-5" />
-                <span> My Drive </span>
-              </Link>
-              {props.folders.filter((item) => item.type === "folder" && item.parent === 1).map((folder) => (
-                  <Link key={folder.id}
-                        className= "w-full justify-start gap-2 hover:bg-neutral-100"
-                        href={`/f/${folder.id}`}
-                  >    
-                      < FolderIcon />
-                      <span>{folder.name}</span>
-                  </Link>
-                ))}
-            </nav>
-          </div>
+          <SideBarNav allFolders= { props.allFolders } selectedFolder={ props.selectedFolder } />
         </div>
 
         {/* Main Content */}

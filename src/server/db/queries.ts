@@ -1,3 +1,5 @@
+import "server-only";
+
 import { db } from "~/server/db"
 import { folder_table as folderSchema, files_table as fileSchema } from "~/server/db/schema"
 import { eq } from "drizzle-orm"
@@ -19,6 +21,10 @@ export async function GetAllParentsForFolder(folderID : number) {
         currentFolderID = folder[0]?.parent
     }
     return parents
+}
+
+export function getAllFolders() {
+    return db.select().from(folderSchema)
 }
 
 
