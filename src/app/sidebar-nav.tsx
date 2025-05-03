@@ -24,7 +24,6 @@ export default function SideBarNav(props : {
             <nav className="space-y-1 mt-4 mx-1">
                 {sorted.map((folder) => {
                     const active = Number(folder.id) === props.selectedFolder
-
                     return (
                         <Button
                             key={folder.id.toString()}        
@@ -39,10 +38,7 @@ export default function SideBarNav(props : {
                             <span>{folder.name}</span>
                             </Link>
                         </Button>
-                        
-
                     )
-
                 })}
             </nav>
         </div>
