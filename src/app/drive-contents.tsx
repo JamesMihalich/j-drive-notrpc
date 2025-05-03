@@ -19,6 +19,7 @@ import Link from "next/link"
 export default function DriveContents(props: {
     files : (typeof files.$inferSelect)[];
     folders : (typeof folders.$inferSelect)[];
+    parents : (typeof folders.$inferSelect)[];
 
 }) {
 
@@ -63,15 +64,15 @@ export default function DriveContents(props: {
 
             <nav className="space-y-1 mt-5">
               <Link
-                      className="w-full justify-start gap-2 hover:bg-neutral-100"
-                      href={'/f/1'}
+                  className="w-full justify-start gap-2 hover:bg-neutral-100"
+                  href={'/f/1'}
               >
                 <FolderIcon className="h-5 w-5" />
                 <span> My Drive </span>
               </Link>
               {props.folders.filter((item) => item.type === "folder" && item.parent === 1).map((folder) => (
                   <Link key={folder.id}
-                        className=" w-full justify-start gap-2 hover:bg-neutral-100"
+                        className= "w-full justify-start gap-2 hover:bg-neutral-100"
                         href={`/f/${folder.id}`}
                   >    
                       < FolderIcon />
@@ -92,7 +93,7 @@ export default function DriveContents(props: {
             <Input type="search" placeholder="Search in Drive" className="w-full placeholder:text-neutral-500 focus-visible:ring-0" />
           </div>
           <div className="m-4 flex items-center">
-              {props.folders.map((folder, index) => (
+              {props.parents.map((folder, index) => (
                 <div key={folder.id} className="flex items-center">
                   {index > 0 && <span className="mx-1 text-white">/</span>}
                   <Link className="p-0 text-white" href= {`/f/${folder.id}`}>
