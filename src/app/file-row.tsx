@@ -2,9 +2,9 @@ import type { Folder, File } from "../lib/mock-data"
 import { FolderIcon, FileIcon } from "lucide-react"
 import Link from "next/link"
 import { formatDistanceToNow } from "date-fns"
-import type { folders, files } from "~/server/db/schema"
+import type { folder_table, files_table } from "~/server/db/schema"
 
-export function FileRow(props : { file : typeof files.$inferSelect }) {
+export function FileRow(props : { file : typeof files_table.$inferSelect }) {
     const { file } = props
     return (
         <div className="flex items-center mb-4">
@@ -26,7 +26,7 @@ export function FileRow(props : { file : typeof files.$inferSelect }) {
     )
 }
 
-export function FolderRow(props : {folder : typeof folders.$inferSelect } ) {
+export function FolderRow(props : {folder : typeof folder_table.$inferSelect } ) {
     const { folder } = props
     return (
         <div className="flex items-center mb-4">

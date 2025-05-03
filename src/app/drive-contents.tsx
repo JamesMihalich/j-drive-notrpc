@@ -12,14 +12,14 @@ import {
 import { FileRow, FolderRow } from "./file-row"
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar"
 import { Input } from "~/components/ui/input"
-import type { files, folders } from "~/server/db/schema"
+import type { files_table, folder_table } from "~/server/db/schema"
 import Link from "next/link"
 
 
 export default function DriveContents(props: {
-    files : (typeof files.$inferSelect)[];
-    folders : (typeof folders.$inferSelect)[];
-    parents : (typeof folders.$inferSelect)[];
+    files : (typeof files_table.$inferSelect)[];
+    folders : (typeof folder_table.$inferSelect)[];
+    parents : (typeof folder_table.$inferSelect)[];
 
 }) {
 
