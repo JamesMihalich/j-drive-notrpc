@@ -26,15 +26,15 @@ export function FileRow(props : { file : typeof files.$inferSelect }) {
     )
 }
 
-export function FolderRow(props : {folder : typeof folders.$inferSelect, handleFolderClick: () => void} ) {
-    const { folder, handleFolderClick} = props
+export function FolderRow(props : {folder : typeof folders.$inferSelect } ) {
+    const { folder } = props
     return (
         <div className="flex items-center mb-4">
             <FolderIcon className="w-8" /> 
 
-            <button className="hover:underline text-white" onClick={() => handleFolderClick()}>
+            <Link className="hover:underline text-white" href={`/f/${folder.id}`}>
                 {props.folder.name}
-            </button> 
+            </Link> 
 
         </div>
 

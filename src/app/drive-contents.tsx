@@ -13,40 +13,16 @@ import { FileRow, FolderRow } from "./file-row"
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar"
 import { Input } from "~/components/ui/input"
 import type { files, folders } from "~/server/db/schema"
+import Link from "next/link"
 
 
 export default function DriveContents(props: {
-    files : typeof files.$inferSelect[];
-    folders : typeof folders.$inferSelect[];
+    files : (typeof files.$inferSelect)[];
+    folders : (typeof folders.$inferSelect)[];
 
 }) {
 
-  const [currentFolder, setCurrentFolder] = useState<number>(1)
-
-  const handleFolderClick = (folderID : number) => {
-    setCurrentFolder(folderID);
-  }
-
-  const breadcrumbs = useMemo(() => {
-    const breadcrumbs = [];
-    let currentID = currentFolder;
-
-    while (currentID !== 1) {
-      const folder = props.folders.find((folder) => folder.id === currentID)
-      if (folder) {
-        breadcrumbs.unshift(folder)
-        currentID = folder.parent ?? 1
-      } else {
-        break
-      }
-    }
-
-    const rootFolder = props.folders.find(f => f.id === 1)!;
-    breadcrumbs.unshift(rootFolder);
-
-    return breadcrumbs
-
-  }, [currentFolder, props.folders])
+  const breadcrumbs : unknown[] = []
 
   const handleUpload = () => {
     alert("Going to implement file uploads")
@@ -86,21 +62,21 @@ export default function DriveContents(props: {
             </Button>
 
             <nav className="space-y-1 mt-5">
-              <Button variant = "ghost"
+              <Link
                       className="w-full justify-start gap-2 hover:bg-neutral-100"
-                      onClick={() => handleFolderClick(1)}
+                      href={'/f/1'}
               >
                 <FolderIcon className="h-5 w-5" />
                 <span> My Drive </span>
-              </Button>
+              </Link>
               {props.folders.filter((item) => item.type === "folder" && item.parent === 1).map((folder) => (
-                  <Button key={folder.id} variant= "ghost" 
-                          className=" w-full justify-start gap-2 hover:bg-neutral-100"
-                          onClick={() => handleFolderClick(folder.id)}
-                          >    
+                  <Link key={folder.id}
+                        className=" w-full justify-start gap-2 hover:bg-neutral-100"
+                        href={`/f/${folder.id}`}
+                  >    
                       < FolderIcon />
                       <span>{folder.name}</span>
-                  </Button>
+                  </Link>
                 ))}
             </nav>
           </div>
@@ -116,12 +92,12 @@ export default function DriveContents(props: {
             <Input type="search" placeholder="Search in Drive" className="w-full placeholder:text-neutral-500 focus-visible:ring-0" />
           </div>
           <div className="m-4 flex items-center">
-              {breadcrumbs.map((folder, index) => (
+              {props.folders.map((folder, index) => (
                 <div key={folder.id} className="flex items-center">
                   {index > 0 && <span className="mx-1 text-white">/</span>}
-                  <Button variant="link" className="p-0 text-white" onClick={() => handleFolderClick(folder.id)}>
+                  <Link className="p-0 text-white" href= {`/f/${folder.id}`}>
                     {folder.name}
-                  </Button>
+                  </Link>
                 </div>
               ))}
             </div>
@@ -137,9 +113,7 @@ export default function DriveContents(props: {
               <hr className="border-t border-neutral-400 mx-4" />
               <div className="flex flex-col p-4 mt-2">
                 { props.folders.map((folder) => (
-                  <FolderRow key={folder.id} folder={folder} handleFolderClick={() => {
-                    handleFolderClick(folder.id);
-                  }}/>
+                  <FolderRow key={folder.id} folder={folder}/>
                 ))}
                 { props.files.map((file) => (
                   <FileRow key={file.id} file = {file} />
