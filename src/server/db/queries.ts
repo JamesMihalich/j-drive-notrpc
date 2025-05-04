@@ -1,7 +1,7 @@
 import "server-only";
 
 import { db } from "~/server/db"
-import { folder_table as folderSchema, files_table as fileSchema } from "~/server/db/schema"
+import { folder_table as folderSchema, files_table as fileSchema, type DB_File } from "~/server/db/schema"
 import { eq } from "drizzle-orm"
 
 export async function GetAllParentsForFolder(folderID : number) {
@@ -43,4 +43,24 @@ export async function getFolders(folderID : number) {
 }        
 
 
+export const MUTATIONS = {
+    createFile : async function (input : {
+        file : {
+            name : string;
+            size : number;
+            type : string;
+            url : string;
+        },
 
+        userId : string
+
+    }) {
+
+        return await db.insert(fileSchema).values({
+            ... input.file,
+            parent : 1
+        })
+    }
+
+        
+}

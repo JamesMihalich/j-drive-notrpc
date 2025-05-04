@@ -1,21 +1,17 @@
 "use client"
 
-import { Button } from "~/components/ui/button"
-import { useMemo, useState } from "react"
 import {
-  FileIcon,
-  FolderIcon,
-  Plus,
-  Search,
   Settings,
 } from "lucide-react"
 import { FileRow, FolderRow } from "./file-row"
-import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar"
 import { Input } from "~/components/ui/input"
 import type { files_table, folder_table } from "~/server/db/schema"
 import Link from "next/link"
 import { SignedIn, SignInButton, SignedOut, SignUpButton, UserButton } from "@clerk/nextjs"
 import SideBarNav from "./sidebar-nav"
+import { UploadButton } from "~/components/uploadthing"
+import "@uploadthing/react/styles.css";
+import { useRouter } from "next/navigation"
 
 
 export default function DriveContents(props: {
@@ -27,9 +23,7 @@ export default function DriveContents(props: {
 
 }) {
 
-  const handleUpload = () => {
-    alert("Going to implement file uploads")
-  }
+  const navigate = useRouter()
 
   return (
     <div className="flex h-screen flex-col text-white text-foreground">
@@ -73,10 +67,14 @@ export default function DriveContents(props: {
 
         <div className="flex-col bg-neutral-900 w-full">
           <div className="flex overflow-auto px-4 pt-4 pb-1 bg-neutral-900 space-x-4 w-full">
-            <Button variant= "outline" className="bg-neutral-800" onClick={() => handleUpload()}>
-              Upload File
-            </Button>
-            <Input type="search" placeholder="Search in Drive" className="w-full placeholder:text-neutral-500 focus-visible:ring-0" />
+            <UploadButton endpoint = "imageUploader" 
+                          className="flex items-center justify-between ut-allowed-content:none" 
+                          onClientUploadComplete={() => {
+                            navigate.refresh()
+                            // This tells Next "hey, we need updated data from the source", and the page reloads and we get the new data!"
+                          }
+            }/>
+            <Input type="search" placeholder="Search in Drive" className="w-full h-10 ml-auto placeholder:text-neutral-500 focus-visible:ring-0" />
           </div>
           <div className="m-4 flex items-center">
               {props.parents.map((folder, index) => (

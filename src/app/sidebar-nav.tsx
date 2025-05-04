@@ -21,7 +21,7 @@ export default function SideBarNav(props : {
 
     return (
         <div>
-            <nav className="space-y-1 mt-4 mx-1">
+            <nav className="space-y-1 mt-4 mx-4">
                 {sorted.map((folder) => {
                     const active = Number(folder.id) === props.selectedFolder
                     return (
@@ -29,7 +29,7 @@ export default function SideBarNav(props : {
                             key={folder.id.toString()}        
                             asChild
                             variant={active ? "secondary" : "ghost"}
-                            className={`w-full justify-start gap-2 ${
+                            className={`w-full justify-start gap-2 h-10 ${
                             active ? "font-semibold" : ""
                             }`}
                         >

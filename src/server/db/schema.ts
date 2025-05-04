@@ -11,7 +11,7 @@ import {
 
 export const createTable = singlestoreTableCreator (
   (name) => `drive_tutorial_${name}`
-)
+);
 
 export const files_table = createTable("files_table", 
   {
@@ -27,7 +27,9 @@ export const files_table = createTable("files_table",
   return [
     index("parent_index").on(t.parent)
   ]
-})
+});
+
+export type DB_File = typeof files_table.$inferSelect;
 
 export const folder_table = createTable("folders_table", {
   id: bigint({mode: "number", unsigned: true}).primaryKey().autoincrement(),
@@ -38,4 +40,6 @@ export const folder_table = createTable("folders_table", {
   return [
     index("parent_index").on(t.parent)
   ]
-})
+});
+
+export type DB_Folder = typeof folder_table.$inferSelect; 
