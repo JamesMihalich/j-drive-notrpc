@@ -4,7 +4,7 @@ import { MUTATIONS } from "~/server/db/queries";
 
 const f = createUploadthing();
 
-const auth = async () => ({ id: "fakeId" }); // Fake auth function
+const auth = ( ) => ({ id: "fakeId" }); // Fake auth function
 
 // FileRouter for your app, can contain multiple FileRoutes
 export const ourFileRouter = {
@@ -42,7 +42,8 @@ export const ourFileRouter = {
             name: file.name,
             size: file.size,
             type: file.type,
-            url: file.ufsUrl
+            url: file.ufsUrl,
+            parent: 0
         },
         userId: metadata.userId
       })
