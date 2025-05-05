@@ -28,14 +28,16 @@ export const ourFileRouter = {
       const user = await auth();
 
       // If you throw, the user will not be able to upload
+      // eslint-disable-next-line @typescript-eslint/only-throw-error
       if (!user.userId) throw new UploadThingError("Unauthorized!");
 
       const folder = await MUTATIONS.getFolderById(input.folderID)
 
-
+      // eslint-disable-next-line @typescript-eslint/only-throw-error
       if (!folder) throw new UploadThingError("Folder Not Found!")
 
       if (folder.ownerID !== user.userId) {
+        // eslint-disable-next-line @typescript-eslint/only-throw-error
         throw new UploadThingError("User is not authorized!")
 
       }
