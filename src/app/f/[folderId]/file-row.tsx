@@ -1,7 +1,5 @@
-import type { Folder, File } from "../lib/mock-data"
 import { FolderIcon, FileIcon } from "lucide-react"
 import Link from "next/link"
-import { formatDistanceToNow } from "date-fns"
 import type { folder_table, files_table } from "~/server/db/schema"
 
 export function FileRow(props : { file : typeof files_table.$inferSelect }) {
