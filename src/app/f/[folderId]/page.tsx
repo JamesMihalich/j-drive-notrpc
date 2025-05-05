@@ -1,4 +1,4 @@
-import DriveContents from "~/app/drive-contents"
+import DriveContents from "~/app/f/[folderId]/drive-contents"
 import { GetAllParentsForFolder, getFiles, getFolders, getAllFolders } from "~/server/db/queries"
 
 export default async function HomePage(props : {params : Promise <{folderId : string}> }) {

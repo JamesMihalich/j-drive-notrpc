@@ -8,6 +8,7 @@ import {
   UserButton,
 } from '@clerk/nextjs'
 
+import { PostHogProvider } from "./_providers/posthog-provider"
 import { type Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
@@ -27,9 +28,11 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <ClerkProvider>
+      <PostHogProvider>
         <html lang="en" className={`${geist.variable}`}>
           <body>{children}</body>
-      </html>
+        </html>
+      </PostHogProvider>
     </ClerkProvider>
 
   );
