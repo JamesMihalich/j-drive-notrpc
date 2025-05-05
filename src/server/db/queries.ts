@@ -3,6 +3,7 @@ import "server-only";
 import { db } from "~/server/db"
 import { folder_table as folderSchema, files_table as fileSchema, type DB_File } from "~/server/db/schema"
 import { eq } from "drizzle-orm"
+import type { Timestamp } from "next/dist/server/lib/cache-handlers/types";
 
 export async function GetAllParentsForFolder(folderID : number) {
 
@@ -21,6 +22,17 @@ export async function GetAllParentsForFolder(folderID : number) {
         currentFolderID = folder[0]?.parent
     }
     return parents
+}
+
+export async function getFolderById(folderID : number) {
+
+    const folder = await db
+        .select()
+        .from(folderSchema)
+        .where(eq(folderSchema.id, folderID))
+
+    return folder[0]
+
 }
 
 export function getAllFolders() {
@@ -59,9 +71,17 @@ export const MUTATIONS = {
 
         return await db.insert(fileSchema).values({
             ... input.file,
-            parent : 1
+            ownerID : input.userId
         })
-    }
+    },
 
-        
+    getFolderById: async function (folderID : number) {
+
+        const folder = await db
+            .select()
+            .from(folderSchema)
+            .where(eq(folderSchema.id, folderID))
+    
+        return folder[0]
+    } 
 }

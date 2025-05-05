@@ -1,8 +1,10 @@
 import { db } from "~/server/db"
 import { mockFiles, mockFolders } from "~/lib/mock-data"
 import { folder_table, files_table } from "~/server/db/schema";
+import { auth } from "@clerk/nextjs/server";
+import { eq } from "drizzle-orm";
 
-export default function SandboxPage() {
+export default async function SandboxPage() {
 
 
     return (
@@ -12,29 +14,23 @@ export default function SandboxPage() {
 
             console.log("sup nerds")
 
-            const folderInsert = await db.insert(folder_table).values(
-                mockFolders.map((folder, index) => ({
-                    id: index + 1,
-                    name: folder.name,
-                    type: folder.type,
-                    parent: index !== 0 ? 1 : null,
-                }))
-              );
+            const user = await auth()
 
-            console.log(folderInsert)
+            if (!user.userId) {
+                throw new Error("User Not Found")
+            }
 
-            const fileInsert = await db.insert(files_table).values(
-                mockFiles.map((file, index) => ({
-                    id: index + 1,
-                    name: file.name,
-                    type: file.type,
-                    parent: (index % 3) + 1,
-                    url: file.url,
-                    size: 50000
-                }))
-            )
+            const folders = await db
+                .select()
+                .from(folder_table)
+                .where(eq(folder_table.ownerID, user.userId ))
 
-            console.log(fileInsert)
+            console.log(folders)
+
+
+
+
+
         }}>
             <button type="submit">Seed</button>
         </form></div>

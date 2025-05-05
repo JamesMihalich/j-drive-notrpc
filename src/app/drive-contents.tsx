@@ -72,8 +72,10 @@ export default function DriveContents(props: {
                           onClientUploadComplete={() => {
                             navigate.refresh()
                             // This tells Next "hey, we need updated data from the source", and the page reloads and we get the new data!"
-                          }
-            }/>
+                          }}
+                          input={{
+                            folderID : props.selectedFolder
+                          }}/>
             <Input type="search" placeholder="Search in Drive" className="w-full h-10 ml-auto placeholder:text-neutral-500 focus-visible:ring-0" />
           </div>
           <div className="m-4 flex items-center">
